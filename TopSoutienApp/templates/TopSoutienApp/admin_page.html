@@ -1,0 +1,1476 @@
+{% extends 'TopSoutienApp/admin_base.html' %}
+{% load static %}
+
+{% block title %}Admin - TopSoutien{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <!-- Navigation des sections -->
+    <div class="section-nav">
+        <button class="nav-btn active" data-section="candidatures">
+            <i class="fas fa-user-check"></i> Étude des candidatures
+        </button>
+        <button class="nav-btn" data-section="profs">
+            <i class="fas fa-chalkboard-teacher"></i> Professeurs
+        </button>
+        <button class="nav-btn" data-section="students">
+            <i class="fas fa-user-graduate"></i> Élèves
+        </button>
+        <button class="nav-btn" data-section="stats">
+            <i class="fas fa-chart-bar"></i> Statistiques
+        </button>
+    </div>
+
+    <!-- Section Étude des candidatures -->
+    <div id="candidatures" class="content-section active">
+        <div class="candidature-header-actions">
+            <h1>Étude des candidatures</h1>
+            <button class="btn-pending-list" onclick="showPendingCandidatures()">
+                <i class="fas fa-clock"></i> Liste des candidatures en attente (3)
+            </button>
+        </div>
+        
+        <!-- Candidature en cours d'étude -->
+        <div class="candidature-card">
+            <div class="candidature-status-badge current">
+                <i class="fas fa-search"></i> En cours d'étude
+            </div>
+            <div class="candidature-header">
+                <img src="{% static 'TopSoutienApp/images/Profil.webp' %}" alt="Photo Prof" class="candidature-photo">
+                <div class="candidature-info">
+                    <h3>Dr. Sophie Dupont</h3>
+                    <p class="candidature-status pending">En attente de validation</p>
+                    <p class="candidature-subject">Mathématiques - Niveau Bac+5</p>
+                </div>
+            </div>
+            <div class="candidature-documents">
+                <h4>Documents envoyés :</h4>
+                <div class="document-list">
+                    <div class="document-item">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>CV.pdf</span>
+                        <button class="view-doc-btn" data-doc="cv">
+                            <i class="fas fa-eye"></i> Voir
+                        </button>
+                    </div>
+                    <div class="document-item">
+                        <i class="fas fa-file-image"></i>
+                        <span>Diplôme.jpg</span>
+                        <button class="view-doc-btn" data-doc="diplome">
+                            <i class="fas fa-eye"></i> Voir
+                        </button>
+                    </div>
+                    <div class="document-item">
+                        <i class="fas fa-video"></i>
+                        <span>Vidéo présentation.mp4</span>
+                        <button class="view-doc-btn" data-doc="video">
+                            <i class="fas fa-eye"></i> Voir
+                        </button>
+                    </div>
+                </div>
+                <div class="candidature-actions">
+                    <button class="btn-validate">✅ Valider</button>
+                    <button class="btn-pending">⏳ Mettre en attente</button>
+                    <button class="btn-reject">❌ Refuser</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section des candidatures en attente (masquée par défaut) -->
+        <div id="pending-candidatures" class="pending-section" style="display: none;">
+            <h2>Candidatures en attente</h2>
+            <div class="pending-grid">
+                <div class="candidature-card pending">
+                    <div class="candidature-status-badge pending">
+                        <i class="fas fa-clock"></i> En attente
+                    </div>
+                    <div class="candidature-header">
+                        <img src="{% static 'TopSoutienApp/images/jessy.jpg' %}" alt="Photo Prof" class="candidature-photo">
+                        <div class="candidature-info">
+                            <h3>David Martin</h3>
+                            <p class="candidature-status pending">En attente depuis 2 jours</p>
+                            <p class="candidature-subject">Physique - Niveau Bac+3</p>
+                        </div>
+                    </div>
+                    <div class="candidature-documents">
+                        <h4>Documents envoyés :</h4>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>CV.pdf</span>
+                                <button class="view-doc-btn" data-doc="cv2">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="candidature-actions">
+                            <button class="btn-validate">✅ Valider</button>
+                            <button class="btn-pending">⏳ Mettre en attente</button>
+                            <button class="btn-reject">❌ Refuser</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidature-card pending">
+                    <div class="candidature-status-badge pending">
+                        <i class="fas fa-clock"></i> En attente
+                    </div>
+                    <div class="candidature-header">
+                        <img src="{% static 'TopSoutienApp/images/img_1.png' %}" alt="Photo Prof" class="candidature-photo">
+                        <div class="candidature-info">
+                            <h3>Marie Dubois</h3>
+                            <p class="candidature-status pending">En attente depuis 1 jour</p>
+                            <p class="candidature-subject">Anglais - Niveau Bac+4</p>
+                        </div>
+                    </div>
+                    <div class="candidature-documents">
+                        <h4>Documents envoyés :</h4>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>CV.pdf</span>
+                                <button class="view-doc-btn" data-doc="cv3">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                            <div class="document-item">
+                                <i class="fas fa-file-image"></i>
+                                <span>Certification.jpg</span>
+                                <button class="view-doc-btn" data-doc="certif">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="candidature-actions">
+                            <button class="btn-validate">✅ Valider</button>
+                            <button class="btn-pending">⏳ Mettre en attente</button>
+                            <button class="btn-reject">❌ Refuser</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidature-card pending">
+                    <div class="candidature-status-badge pending">
+                        <i class="fas fa-clock"></i> En attente
+                    </div>
+                    <div class="candidature-header">
+                        <img src="{% static 'TopSoutienApp/images/img.png' %}" alt="Photo Prof" class="candidature-photo">
+                        <div class="candidature-info">
+                            <h3>Thomas Leroy</h3>
+                            <p class="candidature-status pending">En attente depuis 3 jours</p>
+                            <p class="candidature-subject">Informatique - Niveau Bac+5</p>
+                        </div>
+                    </div>
+                    <div class="candidature-documents">
+                        <h4>Documents envoyés :</h4>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>CV.pdf</span>
+                                <button class="view-doc-btn" data-doc="cv4">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                            <div class="document-item">
+                                <i class="fas fa-video"></i>
+                                <span>Présentation.mp4</span>
+                                <button class="view-doc-btn" data-doc="video2">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="candidature-actions">
+                            <button class="btn-validate">✅ Valider</button>
+                            <button class="btn-pending">⏳ Mettre en attente</button>
+                            <button class="btn-reject">❌ Refuser</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-to-current">
+                <button class="btn-back" onclick="hidePendingCandidatures()">
+                    <i class="fas fa-arrow-left"></i> Retour à la candidature en cours
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Professeurs -->
+    <div id="profs" class="content-section">
+        <div class="section-header-actions">
+            <h1>Gestion des Professeurs</h1>
+            <button class="btn-pending-list" onclick="showPendingProfessors()">
+                <i class="fas fa-clock"></i> Liste des candidatures en attente (5)
+            </button>
+        </div>
+        
+        <!-- Vue principale des professeurs -->
+        <div id="professors-main-view">
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">Total Professeurs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">37</div>
+                    <div class="stat-label">Validés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">En attente</div>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <select class="filter-select">
+                    <option>Toutes les matières</option>
+                    <option>Mathématiques</option>
+                    <option>Physique</option>
+                    <option>Anglais</option>
+                    <option>Français</option>
+                </select>
+                <select class="filter-select">
+                    <option>Tous les statuts</option>
+                    <option>Validé</option>
+                    <option>En attente</option>
+                    <option>Refusé</option>
+                </select>
+            </div>
+
+            <div class="professors-list">
+                <div class="professor-item">
+                    <img src="{% static 'TopSoutienApp/images/jessy.jpg' %}" alt="Prof" class="professor-avatar">
+                    <div class="professor-details">
+                        <h4>Jessy MIHINDOU</h4>
+                        <p>Mathématiques • ⭐ 4.9 (125 avis)</p>
+                        <p class="professor-stats">28 élèves • 563 cours donnés</p>
+                    </div>
+                    <div class="professor-actions">
+                        <span class="status-badge validated">Validé</span>
+                        <button class="btn-action">Voir profil</button>
+                    </div>
+                </div>
+                
+                <div class="professor-item">
+                    <img src="{% static 'TopSoutienApp/images/img_1.png' %}" alt="Prof" class="professor-avatar">
+                    <div class="professor-details">
+                        <h4>Sophie Martin</h4>
+                        <p>Anglais • ⭐ 4.8 (89 avis)</p>
+                        <p class="professor-stats">15 élèves • 234 cours donnés</p>
+                    </div>
+                    <div class="professor-actions">
+                        <span class="status-badge validated">Validé</span>
+                        <button class="btn-action">Voir profil</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section des candidatures en attente pour les professeurs (masquée par défaut) -->
+        <div id="pending-professors" class="pending-section" style="display: none;">
+            <h2>Candidatures de professeurs en attente</h2>
+            <div class="pending-grid">
+                <div class="candidature-card pending">
+                    <div class="candidature-status-badge pending">
+                        <i class="fas fa-clock"></i> En attente
+                    </div>
+                    <div class="candidature-header">
+                        <img src="{% static 'TopSoutienApp/images/jessy.jpg' %}" alt="Photo Prof" class="candidature-photo">
+                        <div class="candidature-info">
+                            <h3>David Martin</h3>
+                            <p class="candidature-status pending">En attente depuis 2 jours</p>
+                            <p class="candidature-subject">Physique - Niveau Bac+3</p>
+                        </div>
+                    </div>
+                    <div class="candidature-documents">
+                        <h4>Documents envoyés :</h4>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>CV.pdf</span>
+                                <button class="view-doc-btn" data-doc="cv2">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="candidature-actions">
+                            <button class="btn-validate">✅ Valider</button>
+                            <button class="btn-pending">⏳ Mettre en attente</button>
+                            <button class="btn-reject">❌ Refuser</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidature-card pending">
+                    <div class="candidature-status-badge pending">
+                        <i class="fas fa-clock"></i> En attente
+                    </div>
+                    <div class="candidature-header">
+                        <img src="{% static 'TopSoutienApp/images/img_1.png' %}" alt="Photo Prof" class="candidature-photo">
+                        <div class="candidature-info">
+                            <h3>Marie Dubois</h3>
+                            <p class="candidature-status pending">En attente depuis 1 jour</p>
+                            <p class="candidature-subject">Anglais - Niveau Bac+4</p>
+                        </div>
+                    </div>
+                    <div class="candidature-documents">
+                        <h4>Documents envoyés :</h4>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>CV.pdf</span>
+                                <button class="view-doc-btn" data-doc="cv3">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                            <div class="document-item">
+                                <i class="fas fa-file-image"></i>
+                                <span>Certification.jpg</span>
+                                <button class="view-doc-btn" data-doc="certif">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="candidature-actions">
+                            <button class="btn-validate">✅ Valider</button>
+                            <button class="btn-pending">⏳ Mettre en attente</button>
+                            <button class="btn-reject">❌ Refuser</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidature-card pending">
+                    <div class="candidature-status-badge pending">
+                        <i class="fas fa-clock"></i> En attente
+                    </div>
+                    <div class="candidature-header">
+                        <img src="{% static 'TopSoutienApp/images/img.png' %}" alt="Photo Prof" class="candidature-photo">
+                        <div class="candidature-info">
+                            <h3>Thomas Leroy</h3>
+                            <p class="candidature-status pending">En attente depuis 3 jours</p>
+                            <p class="candidature-subject">Informatique - Niveau Bac+5</p>
+                        </div>
+                    </div>
+                    <div class="candidature-documents">
+                        <h4>Documents envoyés :</h4>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>CV.pdf</span>
+                                <button class="view-doc-btn" data-doc="cv4">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                            <div class="document-item">
+                                <i class="fas fa-video"></i>
+                                <span>Présentation.mp4</span>
+                                <button class="view-doc-btn" data-doc="video2">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="candidature-actions">
+                            <button class="btn-validate">✅ Valider</button>
+                            <button class="btn-pending">⏳ Mettre en attente</button>
+                            <button class="btn-reject">❌ Refuser</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidature-card pending">
+                    <div class="candidature-status-badge pending">
+                        <i class="fas fa-clock"></i> En attente
+                    </div>
+                    <div class="candidature-header">
+                        <img src="{% static 'TopSoutienApp/images/Profil.webp' %}" alt="Photo Prof" class="candidature-photo">
+                        <div class="candidature-info">
+                            <h3>Sophie Dupont</h3>
+                            <p class="candidature-status pending">En attente depuis 4 jours</p>
+                            <p class="candidature-subject">Mathématiques - Niveau Bac+5</p>
+                        </div>
+                    </div>
+                    <div class="candidature-documents">
+                        <h4>Documents envoyés :</h4>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>CV.pdf</span>
+                                <button class="view-doc-btn" data-doc="cv5">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                            <div class="document-item">
+                                <i class="fas fa-file-image"></i>
+                                <span>Diplôme.jpg</span>
+                                <button class="view-doc-btn" data-doc="diplome2">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="candidature-actions">
+                            <button class="btn-validate">✅ Valider</button>
+                            <button class="btn-pending">⏳ Mettre en attente</button>
+                            <button class="btn-reject">❌ Refuser</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidature-card pending">
+                    <div class="candidature-status-badge pending">
+                        <i class="fas fa-clock"></i> En attente
+                    </div>
+                    <div class="candidature-header">
+                        <img src="{% static 'TopSoutienApp/images/jessy.jpg' %}" alt="Photo Prof" class="candidature-photo">
+                        <div class="candidature-info">
+                            <h3>Alexandre Moreau</h3>
+                            <p class="candidature-status pending">En attente depuis 1 jour</p>
+                            <p class="candidature-subject">Français - Niveau Bac+3</p>
+                        </div>
+                    </div>
+                    <div class="candidature-documents">
+                        <h4>Documents envoyés :</h4>
+                        <div class="document-list">
+                            <div class="document-item">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>CV.pdf</span>
+                                <button class="view-doc-btn" data-doc="cv6">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="candidature-actions">
+                            <button class="btn-validate">✅ Valider</button>
+                            <button class="btn-pending">⏳ Mettre en attente</button>
+                            <button class="btn-reject">❌ Refuser</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-to-current">
+                <button class="btn-back" onclick="hidePendingProfessors()">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste des professeurs
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Élèves -->
+    <div id="students" class="content-section">
+        <h1>Gestion des Élèves</h1>
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-number">210</div>
+                <div class="stat-label">Total Élèves</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">156</div>
+                <div class="stat-label">Actifs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">54</div>
+                <div class="stat-label">Inactifs</div>
+            </div>
+        </div>
+
+        <div class="students-list">
+            <div class="student-item">
+                <img src="{% static 'TopSoutienApp/images/img.png' %}" alt="Élève" class="student-avatar">
+                <div class="student-details">
+                    <h4>Jean Dupont</h4>
+                    <p>12 cours suivis • Mathématiques, Physique</p>
+                    <p class="student-activity">Dernier cours : Hier</p>
+                </div>
+                <div class="student-actions">
+                    <button class="btn-action">Voir profil</button>
+                </div>
+            </div>
+            
+            <div class="student-item">
+                <img src="{% static 'TopSoutienApp/images/img_1.png' %}" alt="Élève" class="student-avatar">
+                <div class="student-details">
+                    <h4>Marie Laurent</h4>
+                    <p>8 cours suivis • Anglais, Français</p>
+                    <p class="student-activity">Dernier cours : Il y a 3 jours</p>
+                </div>
+                <div class="student-actions">
+                    <button class="btn-action">Voir profil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Statistiques -->
+    <div id="stats" class="content-section">
+        <h1>Statistiques de la Plateforme</h1>
+        <div class="stats-grid">
+            <div class="stat-card large">
+                <h3>Activité mensuelle</h3>
+                <canvas id="activityChart" height="200"></canvas>
+            </div>
+            <div class="stat-card large">
+                <h3>Répartition des matières</h3>
+                <canvas id="subjectsChart" height="200"></canvas>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">320</div>
+                <div class="stat-label">Cours donnés ce mois</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">150</div>
+                <div class="stat-label">Cours réservés</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">89%</div>
+                <div class="stat-label">Taux de satisfaction</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">€12,450</div>
+                <div class="stat-label">Chiffre d'affaires</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modale de prévisualisation de document -->
+<div id="docModal" class="modal">
+    <div class="modal-content">
+        <button id="closeDocModal" class="modal-close">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="docViewer"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.admin-dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-nav {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    border-bottom: 2px solid var(--bleu-ciel);
+    padding-bottom: 16px;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--bleu-fonce);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-btn:hover {
+    background: var(--bleu-ciel);
+    color: var(--bleu-fonce);
+}
+
+.nav-btn.active {
+    background: var(--orange);
+    color: #fff;
+}
+
+.content-section {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.content-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.content-section h1 {
+    font-size: 2rem;
+    color: var(--bleu-fonce);
+    margin-bottom: 32px;
+}
+
+/* Section Candidatures */
+.candidature-header-actions, .section-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.btn-pending-list {
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-pending-list:hover {
+    background: var(--bleu-fonce);
+    transform: translateY(-2px);
+}
+
+.candidature-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    position: relative;
+}
+
+.candidature-status-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.candidature-status-badge.current {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.candidature-status-badge.pending {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.candidature-header {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.candidature-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.candidature-info h3 {
+    margin: 0 0 8px 0;
+    color: var(--bleu-fonce);
+}
+
+.candidature-status {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.candidature-status.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.candidature-subject {
+    color: #666;
+    font-size: 1rem;
+}
+
+.document-list {
+    margin: 20px 0;
+}
+
+.document-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.document-item:last-child {
+    border-bottom: none;
+}
+
+.view-doc-btn {
+    background: var(--bleu-fonce);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.candidature-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.btn-validate, .btn-reject, .btn-pending {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-validate {
+    background: #28a745;
+    color: #fff;
+}
+
+.btn-reject {
+    background: #dc3545;
+    color: #fff;
+}
+
+.btn-pending {
+    background: #ffc107;
+    color: #212529;
+}
+
+.btn-pending:hover {
+    background: #e0a800;
+    transform: translateY(-2px);
+}
+
+/* Section des candidatures en attente */
+.pending-section {
+    margin-top: 32px;
+}
+
+.pending-section h2 {
+    color: var(--bleu-fonce);
+    margin-bottom: 24px;
+    font-size: 1.8rem;
+}
+
+.pending-grid {
+    display: grid;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.candidature-card.pending {
+    border-left: 4px solid #ffc107;
+}
+
+.back-to-current {
+    text-align: center;
+    margin-top: 32px;
+}
+
+.btn-back {
+    background: var(--bleu-fonce);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-back:hover {
+    background: var(--orange);
+    transform: translateY(-2px);
+}
+
+/* Section Professeurs et Élèves */
+.stats-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.stat-card.large {
+    grid-column: span 2;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--orange);
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    color: var(--bleu-fonce);
+    font-weight: 600;
+}
+
+.filter-section {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.filter-select {
+    padding: 10px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.professors-list, .students-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.professor-item, .student-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.professor-avatar, .student-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.professor-details, .student-details {
+    flex: 1;
+}
+
+.professor-details h4, .student-details h4 {
+    margin: 0 0 8px 0;
+    color: var(--bleu-fonce);
+}
+
+.professor-stats, .student-activity {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 4px 0;
+}
+
+.status-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.status-badge.validated {
+    background: #d4edda;
+    color: #155724;
+}
+
+.btn-action {
+    background: var(--bleu-fonce);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Section Statistiques */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.stats-grid h3 {
+    color: var(--bleu-fonce);
+    margin-bottom: 16px;
+    font-size: 1.3rem;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(11,12,55,0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 90vw;
+    max-height: 90vh;
+    padding: 24px;
+    position: relative;
+    overflow: auto;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--bleu-fonce);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.modal-close:hover {
+    background: #f0f0f0;
+}
+
+#docViewer {
+    min-width: 300px;
+    min-height: 300px;
+    max-width: 80vw;
+    max-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+    .modal {
+        padding: 8px;
+    }
+    
+    .modal-content {
+        padding: 16px;
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+    
+    #docViewer {
+        min-width: 250px;
+        min-height: 250px;
+        max-width: 90vw;
+        max-height: 60vh;
+    }
+    
+    .modal-close {
+        top: 8px;
+        right: 8px;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 12px;
+    }
+    
+    #docViewer {
+        min-width: 200px;
+        min-height: 200px;
+    }
+}
+
+/* Responsive Design - Tablette */
+@media (max-width: 1024px) {
+    .admin-dashboard {
+        padding: 0 16px;
+    }
+    
+    .section-nav {
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+    
+    .nav-btn {
+        padding: 10px 18px;
+        font-size: 0.95rem;
+    }
+    
+    .stats-overview {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .candidature-header {
+        gap: 20px;
+    }
+    
+    .candidature-photo {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .professor-item, .student-item {
+        padding: 16px;
+        gap: 16px;
+    }
+    
+    .professor-avatar, .student-avatar {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 768px) {
+    .admin-dashboard {
+        padding: 0 12px;
+    }
+    
+    .section-nav {
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--bleu-ciel);
+        padding-bottom: 12px;
+    }
+    
+    .nav-btn {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .content-section h1 {
+        font-size: 1.6rem;
+        margin-bottom: 24px;
+        text-align: center;
+    }
+    
+    .candidature-header-actions, .section-header-actions {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+    
+    .btn-pending-list {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .candidature-card {
+        padding: 20px;
+    }
+    
+    .candidature-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+    
+    .candidature-photo {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .candidature-status-badge {
+        position: static;
+        margin-bottom: 16px;
+        justify-content: center;
+    }
+    
+    .document-list {
+        margin: 16px 0;
+    }
+    
+    .document-item {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        padding: 16px 0;
+    }
+    
+    .candidature-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .btn-validate, .btn-reject, .btn-pending {
+        width: 100%;
+        padding: 14px 20px;
+    }
+    
+    .stats-overview {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .filter-section {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .filter-select {
+        width: 100%;
+        padding: 12px 16px;
+    }
+    
+    .professors-list, .students-list {
+        gap: 12px;
+    }
+    
+    .professor-item, .student-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+        gap: 12px;
+    }
+    
+    .professor-actions, .student-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .stat-card.large {
+        grid-column: span 1;
+    }
+    
+    .pending-grid {
+        gap: 16px;
+    }
+    
+    .back-to-current {
+        margin-top: 24px;
+    }
+    
+    .btn-back {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Responsive Design - Très petit écran */
+@media (max-width: 480px) {
+    .admin-dashboard {
+        padding: 0 8px;
+    }
+    
+    .section-nav {
+        margin-bottom: 16px;
+    }
+    
+    .nav-btn {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .content-section h1 {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+    
+    .candidature-card {
+        padding: 16px;
+    }
+    
+    .candidature-photo {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .stat-card {
+        padding: 16px;
+    }
+    
+    .stat-number {
+        font-size: 1.8rem;
+    }
+    
+    .professor-item, .student-item {
+        padding: 12px;
+    }
+    
+    .professor-avatar, .student-avatar {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .btn-action {
+        width: 100%;
+        padding: 10px 16px;
+    }
+}
+
+/* Améliorations pour les écrans tactiles */
+@media (hover: none) and (pointer: coarse) {
+    .nav-btn, .btn-action, .btn-validate, .btn-reject, .btn-pending, .btn-back {
+        min-height: 44px; /* Taille minimale recommandée pour le touch */
+    }
+    
+    .filter-select {
+        min-height: 44px;
+    }
+    
+    .document-item {
+        padding: 16px 0;
+    }
+}
+
+/* Optimisations pour les écrans haute résolution */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .candidature-photo, .professor-avatar, .student-avatar {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// Initialisation au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM chargé, initialisation...'); // Debug
+    
+    // Vérifier que toutes les sections existent
+    const sections = ['candidatures', 'profs', 'students', 'stats'];
+    sections.forEach(sectionId => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            console.log('Section trouvée:', sectionId); // Debug
+        } else {
+            console.error('Section manquante:', sectionId); // Debug
+        }
+    });
+    
+    // S'assurer que la section candidatures est active par défaut
+    const candidaturesSection = document.getElementById('candidatures');
+    if (candidaturesSection) {
+        candidaturesSection.classList.add('active');
+        console.log('Section candidatures activée'); // Debug
+    }
+    
+    // Navigation entre sections
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetSection = this.getAttribute('data-section');
+            console.log('Clic sur:', targetSection); // Debug
+            
+            // Mettre à jour les boutons actifs
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Afficher/masquer les sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+                console.log('Section masquée:', section.id); // Debug
+            });
+            
+            const targetElement = document.getElementById(targetSection);
+            if (targetElement) {
+                targetElement.classList.add('active');
+                console.log('Section affichée:', targetSection); // Debug
+            } else {
+                console.error('Section non trouvée:', targetSection); // Debug
+            }
+        });
+    });
+});
+
+// Fonctions pour gérer les candidatures en attente
+function showPendingCandidatures() {
+    document.querySelector('.candidature-card').style.display = 'none';
+    document.getElementById('pending-candidatures').style.display = 'block';
+}
+
+function hidePendingCandidatures() {
+    document.querySelector('.candidature-card').style.display = 'block';
+    document.getElementById('pending-candidatures').style.display = 'none';
+}
+
+// Fonctions pour gérer les candidatures en attente des professeurs
+function showPendingProfessors() {
+    document.getElementById('professors-main-view').style.display = 'none';
+    document.getElementById('pending-professors').style.display = 'block';
+}
+
+function hidePendingProfessors() {
+    document.getElementById('professors-main-view').style.display = 'block';
+    document.getElementById('pending-professors').style.display = 'none';
+}
+
+// Gestion des documents
+document.querySelectorAll('.view-doc-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const docType = this.getAttribute('data-doc');
+        const modal = document.getElementById('docModal');
+        const viewer = document.getElementById('docViewer');
+        
+        viewer.innerHTML = '';
+        
+        if (docType === 'cv') {
+            viewer.innerHTML = '<iframe src="data:application/pdf;base64,JVBERi0xLjQKJcOkw7zDtsO..." style="width:60vw; height:70vh; border:none;"></iframe>';
+        } else if (docType === 'diplome') {
+            viewer.innerHTML = '<img src="{% static "TopSoutienApp/images/Profil.webp" %}" style="max-width:60vw; max-height:70vh; border-radius:8px;" />';
+        } else if (docType === 'video') {
+            viewer.innerHTML = '<video src="{% static "TopSoutienApp/videos/testing.mp4" %}" controls style="max-width:60vw; max-height:70vh;"></video>';
+        }
+        
+        modal.style.display = 'flex';
+    });
+});
+
+// Fermer la modale
+document.getElementById('closeDocModal').onclick = function() {
+    document.getElementById('docModal').style.display = 'none';
+};
+
+window.onclick = function(event) {
+    const modal = document.getElementById('docModal');
+    if (event.target === modal) modal.style.display = 'none';
+};
+
+// Graphiques pour la section statistiques
+document.addEventListener('DOMContentLoaded', function() {
+    // Configuration responsive pour Chart.js
+    const isMobile = window.innerWidth <= 768;
+    const isSmallMobile = window.innerWidth <= 480;
+    
+    // Graphique d'activité mensuelle
+    const ctxActivity = document.getElementById('activityChart');
+    if (ctxActivity) {
+        new Chart(ctxActivity, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+                datasets: [{
+                    label: 'Cours donnés',
+                    data: [45, 52, 48, 61, 55, 68],
+                    borderColor: '#e0753c',
+                    backgroundColor: 'rgba(224, 117, 60, 0.1)',
+                    tension: 0.4,
+                    pointRadius: isMobile ? 4 : 6,
+                    borderWidth: isMobile ? 2 : 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { display: false } 
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: isMobile ? 10 : 12
+                            }
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                size: isMobile ? 10 : 12
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Graphique des matières
+    const ctxSubjects = document.getElementById('subjectsChart');
+    if (ctxSubjects) {
+        new Chart(ctxSubjects, {
+            type: 'doughnut',
+            data: {
+                labels: ['Mathématiques', 'Anglais', 'Physique', 'Français'],
+                datasets: [{
+                    data: [35, 25, 20, 20],
+                    backgroundColor: ['#e0753c', '#0b0c37', '#70b7f7', '#bf903a']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { 
+                        position: isMobile ? 'bottom' : 'right',
+                        labels: {
+                            font: {
+                                size: isMobile ? 10 : 12
+                            },
+                            padding: isMobile ? 10 : 20
+                        }
+                    } 
+                }
+            }
+        });
+    }
+    
+    // Gestion du redimensionnement de la fenêtre
+    window.addEventListener('resize', function() {
+        const newIsMobile = window.innerWidth <= 768;
+        if (newIsMobile !== isMobile) {
+            location.reload(); // Recharger pour adapter les graphiques
+        }
+    });
+});
+</script>
+{% endblock %} 

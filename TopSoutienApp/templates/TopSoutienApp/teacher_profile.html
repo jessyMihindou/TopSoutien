@@ -1,0 +1,236 @@
+{% extends 'TopSoutienApp/base.html' %}
+{% load static %}
+
+{% block title %}Profil Professeur - TopSoutien{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Messages de succès -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <!-- Profil utilisateur -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="Photo de profil" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
+                            <i class="fas fa-user fa-3x text-white"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <h4 class="card-title">{{ full_name }}</h4>
+                    <p class="text-muted">{{ user_type }}</p>
+                    
+                    {% if domains_of_competence %}
+                        <p class="badge bg-primary">{{ domains_of_competence }}</p>
+                    {% endif %}
+                    
+                    <div class="mt-3">
+                        <a href="#" class="btn btn-primary btn-sm">Modifier le profil</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-sm">Déconnexion</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informations détaillées -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Informations personnelles</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Prénom:</strong> {{ first_name }}</p>
+                            <p><strong>Nom:</strong> {{ last_name }}</p>
+                            <p><strong>Email:</strong> {{ email }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Téléphone:</strong> {{ phone_number|default:"Non renseigné" }}</p>
+                            <p><strong>Type de compte:</strong> {{ user_type }}</p>
+                            <p><strong>Membre depuis:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bio -->
+            {% if bio %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Présentation</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ bio }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Documents -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Documents</h5>
+                </div>
+                <div class="card-body">
+                    {% if cv_file %}
+                        <p><strong>CV:</strong> <a href="{{ cv_file.url }}" target="_blank">Voir le CV</a></p>
+                    {% else %}
+                        <p><strong>CV:</strong> Non uploadé</p>
+                    {% endif %}
+                    
+                    {% if presentation_video %}
+                        <p><strong>Vidéo de présentation:</strong> <a href="{{ presentation_video.url }}" target="_blank">Voir la vidéo</a></p>
+                    {% else %}
+                        <p><strong>Vidéo de présentation:</strong> Non uploadée</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Statistiques</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <h4 class="text-primary">0</h4>
+                            <p class="text-muted">Élèves</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="text-success">0</h4>
+                            <p class="text-muted">Cours donnés</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="text-info">0</h4>
+                            <p class="text-muted">Heures d'enseignement</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.alert {
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 12px 12px 0 0 !important;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: #0b0c37;
+    border-color: #0b0c37;
+}
+
+.btn-primary:hover {
+    background-color: #e76c40;
+    border-color: #e76c40;
+}
+
+.badge {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+}
+</style>
+{% endblock %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// Graphe évolution des heures de cours
+const ctxHours = document.getElementById('hoursChart').getContext('2d');
+new Chart(ctxHours, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+        datasets: [{
+            label: 'Heures de cours',
+            data: [3, 8, 15, 22, 35, 42],
+            borderColor: '#030c2a',
+            backgroundColor: 'rgba(3,12,42,0.08)',
+            tension: 0.4,
+            fill: true,
+            pointRadius: 5,
+            pointBackgroundColor: '#030c2a',
+        }]
+    },
+    options: {
+        plugins: { legend: { display: false } },
+        scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 5 } }
+        }
+    }
+});
+// Graphe évolution du nombre d'élèves
+const ctxEleves = document.getElementById('elevesChart').getContext('2d');
+new Chart(ctxEleves, {
+    type: 'bar',
+    data: {
+        labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+        datasets: [{
+            label: 'Élèves',
+            data: [2, 4, 7, 10, 13, 15],
+            backgroundColor: '#1a237e',
+            borderRadius: 8
+        }]
+    },
+    options: {
+        plugins: { legend: { display: false } },
+        scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 2 } }
+        }
+    }
+});
+// Graphe répartition des matières enseignées
+const ctxMatieres = document.getElementById('matieresChart').getContext('2d');
+new Chart(ctxMatieres, {
+    type: 'doughnut',
+    data: {
+        labels: ['Mathématiques', 'Physique', 'Informatique'],
+        datasets: [{
+            data: [20, 12, 10],
+            backgroundColor: ['#030c2a', '#28a745', '#1a237e'],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        plugins: { legend: { position: 'bottom' } }
+    }
+});
+</script>
+{% endblock %} 

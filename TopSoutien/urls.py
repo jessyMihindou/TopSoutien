@@ -1,22 +1,25 @@
-"""
-URL configuration for TopSoutien project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-# from django.contrib import admin
+from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+from TopSoutienApp.views import *
 
 urlpatterns = [
-    #    path('admin/', admin.site.urls),
-]
+    path('admin/', admin.site.urls),
+    path('', home, name='home'),
+    
+    path('login/', login_view, name='login'),
+    path('signup-student/', signup_student, name='signup_student'),
+    path('signup-teacher/', signup_teacher, name='signup_teacher'),
+    path('student-profile/',student_profile, name='student_profile'),
+    path('teacher-profile/', teacher_profile, name='teacher_profile'),
+    path('find-teacher/', find_teacher, name='find_teacher'),
+    path('course-booking/', course_booking, name='course_booking'),
+    path('payment/', payment_page, name='payment'),  # Nouvelle URL
+    path('join-course/',join_course, name='join_course'),
+    path('admin-page/', admin_page, name='admin_page'),
+] 
+
+# Ajouter les URLs pour les médias en développement
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

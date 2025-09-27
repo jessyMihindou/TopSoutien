@@ -1,0 +1,287 @@
+{% extends "TopSoutienApp/base.html" %}
+{% load static %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div style="padding: 40px;">
+    <!-- Message de bienvenue pour l'utilisateur connecté -->
+    <div style="background: linear-gradient(135deg, #e3f2fd, #f3e5f5); padding: 20px; border-radius: 15px; margin-bottom: 30px; border-left: 4px solid var(--orange);">
+        <h3 style="color: var(--bleu-fonce); margin: 0;">👋 Bonjour {{ user.first_name|default:user.username }} !</h3>
+        <p style="margin: 10px 0 0 0; color: #666;">Trouvez le professeur parfait pour vos cours.</p>
+    </div>
+
+    <!-- Barre de filtres -->
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px;">
+        <label>
+            <input type="text" placeholder="Ce que je veux apprendre" value="Anglais" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
+        </label>
+        <label>
+            <select style="padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
+                <option>Spécialisation</option>
+            </select>
+        </label>
+        <label>
+            <select style="padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
+                <option>Prix par cours</option>
+            </select>
+        </label>
+        <label>
+            <select style="padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
+                <option>Pays de naissance</option>
+            </select>
+        </label>
+        <label>
+            <select style="padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
+                <option>Mes disponibilités</option>
+            </select>
+        </label>
+        <label>
+            <input type="text" placeholder="Saisir nom ou mot-clé" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
+        </label>
+    </div>
+
+    <!-- Liste de professeurs -->
+    <div class="prof-list" style="display: grid; gap: 20px;">
+        <!-- Card professeur -->
+        <div class="prof-card">
+            <div class="prof-info">
+                <div class="prof-header">
+                    <img src="{% static 'TopSoutienApp/images/img.png' %}" alt="photo" class="prof-avatar">
+                    <div>
+                        <h3>Jessy MIHINDOU<img src="https://flagcdn.com/16x12/ga.png" alt="Ukraine"></h3>
+                        <p>Mathematique</p>
+                        <p class="text-muted">28 élèves actifs • 563 cours</p>
+                        <p class="text-muted">Parle : Français (Supérieur), Anglais (Supérieur) +2</p>
+                    </div>
+                </div>
+                <p class="prof-description">Débloquez votre potentiel en anglais avec une approche personnalisée ! — Mon objectif est de rendre l'apprentissage agréable, engageant et efficace.</p>
+                <p class="rating">⭐ 5 (12 avis) • 3000 FCFA / 50 min</p>
+
+                <!-- Bouton réserver -->
+                <div class="bottom-actions">
+                    <a href="{% url 'course_booking' %}" class="btn-reserve-bottom">Réserver un cours</a>
+                </div>
+            </div>
+
+            <div class="video-container">
+                <div class="video-preview">
+                    <span class="play-icon">▶</span>
+                </div>
+                <div class="video-hover">
+                    <video src="{% static 'TopSoutienApp/videos/testing.mp4' %}" controls muted></video>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deuxième Card -->
+        <div class="prof-card">
+            <div class="prof-info">
+                <div class="prof-header">
+                    <img src="{% static 'TopSoutienApp/images/img_1.png' %}" alt="photo" class="prof-avatar">
+                    <div>
+                        <h3>David S. <img src="https://flagcdn.com/16x12/cm.png" alt="USA"></h3>
+                        <p>Anglais</p>
+                        <p class="text-muted">103 élèves actifs • 13768 cours</p>
+                        <p class="text-muted">Parle : Anglais (Natif)</p>
+                    </div>
+                </div>
+                <p class="prof-description">Libérez votre potentiel en anglais avec un professeur certifié TESOL & TEYL ! 9 ans d'expérience en affaires.</p>
+                <p class="rating">⭐ 5 (12 avis) • 3000 FCFA / 50 min</p>
+
+                <!-- Bouton réserver -->
+                <div class="bottom-actions">
+                    <a href="{% url 'course_booking' %}" class="btn-reserve-bottom">Réserver un cours</a>
+                </div>
+            </div>
+
+            <div class="video-container">
+                <div class="video-preview">
+                    <span class="play-icon">▶</span>
+                </div>
+                <div class="video-hover">
+                    <video src="{% static 'TopSoutienApp/videos/testing.mp4' %}" controls muted></video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- Si l'utilisateur n'est pas connecté, afficher un message et rediriger -->
+<div style="padding: 40px; text-align: center;">
+    <div style="background: #fff; border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto;">
+        <div style="font-size: 4rem; margin-bottom: 20px;">🔒</div>
+        <h2 style="color: var(--bleu-fonce); margin-bottom: 20px;">Connexion requise</h2>
+        <p style="color: #666; margin-bottom: 30px; line-height: 1.6;">
+            Vous devez être connecté pour rechercher et réserver des cours avec nos professeurs.
+        </p>
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'login' %}" style="background: var(--orange); color: #fff; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                Se connecter
+            </a>
+            <a href="{% url 'signup_student' %}" style="background: transparent; color: var(--orange); border: 2px solid var(--orange); padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                S'inscrire
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Redirection automatique après 3 secondes
+setTimeout(function() {
+    window.location.href = "{% url 'login' %}";
+}, 3000);
+</script>
+{% endif %}
+
+<!-- CSS styles -->
+<style>
+:root {
+    --orange: #e76c40;
+    --jaune: #bf903a;
+    --bleu-fonce: #0b0c37;
+}
+
+.prof-list {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.prof-card {
+    display: flex;
+    background: #fff;
+    border: 1.5px solid var(--orange);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: none !important;
+    transition: all 0.3s;
+    height: auto;
+    position: relative;
+}
+
+.prof-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+
+.prof-info {
+    flex: 3;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.prof-header {
+    display: flex;
+    gap: 15px;
+}
+
+.prof-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid var(--jaune);
+}
+
+.text-muted {
+    margin: 2px 0;
+    font-size: 14px;
+    color: #70b7f7;
+}
+
+.prof-description {
+    color: #333;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.rating {
+    color: #ff6b35;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.bottom-actions {
+    margin-top: auto;
+    padding-top: 15px;
+}
+
+.btn-reserve-bottom {
+    background: var(--orange);
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-reserve-bottom:hover {
+    background: var(--jaune);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 108, 64, 0.4);
+}
+
+.video-container {
+    flex: 1;
+    position: relative;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+.video-preview {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.play-icon {
+    font-size: 3rem;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.video-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.video-container:hover .video-hover {
+    opacity: 1;
+}
+
+.video-hover video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .prof-card {
+        flex-direction: column;
+    }
+    
+    .video-container {
+        min-height: 150px;
+    }
+}
+</style>
+{% endblock %}

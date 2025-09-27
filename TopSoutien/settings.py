@@ -36,7 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'TopSoutienApp.apps.TopsoutienappConfig'
+    'django.contrib.admin',
+    'TopSoutienApp',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -112,7 +114,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
@@ -121,3 +123,21 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuration du modèle utilisateur personnalisé
+AUTH_USER_MODEL = 'TopSoutienApp.User'
+
+# Configuration pour les médias (images de profil)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Configuration des URLs de login/logout
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# URLs qui nécessitent une authentification
+LOGIN_REQUIRED_URLS = [
+    '/course-booking/',
+    '/find-teacher/',
+]

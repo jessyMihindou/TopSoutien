@@ -1,0 +1,300 @@
+{% extends 'TopSoutienApp/base.html' %}
+{% load static %}
+
+{% block title %}Inscription Professeur - TopSoutien{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+    --orange: #e76c40;
+    --jaune: #bf903a;
+    --bleu-fonce: #0b0c37;
+}
+.prof-signup-section {
+    background: #fff;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+}
+.prof-signup-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: none !important;
+    padding: 40px 32px 32px 32px;
+    max-width: 600px;
+    width: 100%;
+}
+.prof-signup-card h2 {
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: var(--bleu-fonce);
+}
+.form-label {
+    font-weight: 600;
+}
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+}
+.btn-signup {
+    background: var(--orange);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 14px 0;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+.btn-signup:hover {
+    background: var(--jaune);
+    color: #fff;
+}
+.upload-dropzone {
+    border: 2px dashed var(--jaune);
+    border-radius: 12px;
+    padding: 24px 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    margin-bottom: 8px;
+    box-shadow: none !important;
+}
+.upload-dropzone:hover, .upload-dropzone.dragover {
+    border-color: #fff;
+    background: #fff;
+}
+.upload-text {
+    color: var(--bleu-fonce);
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+.preview-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #e3e6f0;
+    margin-bottom: 10px;
+}
+.preview-video {
+    max-width: 240px;
+    border-radius: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .prof-signup-section {
+        padding: 24px;
+    }
+    
+    .prof-signup-card {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .prof-signup-section {
+        padding: 20px;
+    }
+    
+    .prof-signup-card {
+        padding: 20px;
+    }
+    
+    .upload-dropzone {
+        padding: 20px 16px;
+        min-height: 100px;
+    }
+    
+    .upload-text {
+        font-size: 1rem;
+    }
+    
+    .preview-img {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .preview-video {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .prof-signup-section {
+        padding: 16px;
+    }
+    
+    .prof-signup-card {
+        padding: 16px;
+    }
+    
+    .prof-signup-card h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+    
+    .upload-dropzone {
+        padding: 16px 12px;
+        min-height: 90px;
+    }
+    
+    .upload-text {
+        font-size: 0.9rem;
+    }
+    
+    .preview-img {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .preview-video {
+        max-width: 240px;
+    }
+    
+    .btn-signup {
+        padding: 12px 0;
+        font-size: 1rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="prof-signup-section">
+    <div class="prof-signup-card">
+        <h2 class="text-center mb-4">Devenir Professeur sur TopSoutien</h2>
+        <form id="profSignupForm" enctype="multipart/form-data">
+            <div class="mb-3 text-center">
+                <label for="photo" class="upload-label w-100">
+                    <div class="upload-dropzone" id="photoDropzone">
+                        <i class="fas fa-user-circle fa-3x mb-2"></i>
+                        <div class="upload-text">Cliquez ou déposez votre <b>photo de profil</b> ici</div>
+                        <img id="photoPreview" class="preview-img d-none mt-2" alt="Prévisualisation photo">
+                    </div>
+                </label>
+                <input type="file" class="form-control d-none" id="photo" accept="image/*">
+            </div>
+            <div class="mb-3">
+                <label for="fullname" class="form-label">Nom complet</label>
+                <input type="text" class="form-control" id="fullname" placeholder="Votre nom et prénom" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Adresse e-mail</label>
+                <input type="email" class="form-control" id="email" placeholder="exemple@email.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Téléphone</label>
+                <input type="tel" class="form-control" id="phone" placeholder="Numéro de téléphone" required>
+            </div>
+            <!-- NOUVEAUX CHAMPS MOT DE PASSE -->
+            <div class="mb-3">
+                <label for="password1" class="form-label">Mot de passe</label>
+                <input type="password" class="form-control" id="password1" placeholder="Votre mot de passe" required>
+                <small class="form-text text-muted">Votre mot de passe doit contenir au moins 8 caractères.</small>
+            </div>
+            <div class="mb-3">
+                <label for="password2" class="form-label">Confirmation du mot de passe</label>
+                <input type="password" class="form-control" id="password2" placeholder="Confirmez votre mot de passe" required>
+                <small class="form-text text-muted">Entrez le même mot de passe que précédemment, pour vérification.</small>
+            </div>
+            <div class="mb-3">
+                <label for="competence" class="form-label">Domaines de compétence</label>
+                <input type="text" class="form-control" id="competence" placeholder="Ex: Mathématiques, Physique, Anglais..." required>
+            </div>
+            <div class="mb-3">
+                <label for="cv" class="upload-label w-100">
+                    <div class="upload-dropzone" id="cvDropzone">
+                        <i class="fas fa-file-upload fa-2x mb-2"></i>
+                        <div class="upload-text">Cliquez ou déposez votre <b>CV (PDF)</b> ici</div>
+                        <span id="cvName" class="text-muted"></span>
+                    </div>
+                </label>
+                <input type="file" class="form-control d-none" id="cv" accept="application/pdf">
+            </div>
+            <div class="mb-3">
+                <label for="video" class="upload-label w-100">
+                    <div class="upload-dropzone" id="videoDropzone">
+                        <i class="fas fa-video fa-2x mb-2"></i>
+                        <div class="upload-text">Cliquez ou déposez une <b>vidéo de présentation</b> (optionnel)</div>
+                        <video id="videoPreview" class="preview-video d-none mt-2" controls></video>
+                    </div>
+                </label>
+                <input type="file" class="form-control d-none" id="video" accept="video/*">
+            </div>
+            <div class="mb-3">
+                <label for="bio" class="form-label">Présentation / Bio</label>
+                <textarea class="form-control" id="bio" rows="3" placeholder="Présentez-vous en quelques lignes..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-signup w-100">
+                <i class="fas fa-user-plus me-2"></i>S'inscrire comme Professeur
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// JavaScript pour la gestion des fichiers (à ajouter si nécessaire)
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestion de la photo de profil
+    const photoInput = document.getElementById('photo');
+    const photoPreview = document.getElementById('photoPreview');
+    const photoDropzone = document.getElementById('photoDropzone');
+    
+    if (photoInput) {
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoPreview.src = e.target.result;
+                    photoPreview.classList.remove('d-none');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    // Gestion du CV
+    const cvInput = document.getElementById('cv');
+    const cvName = document.getElementById('cvName');
+    
+    if (cvInput) {
+        cvInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                cvName.textContent = file.name;
+            }
+        });
+    }
+    
+    // Gestion de la vidéo
+    const videoInput = document.getElementById('video');
+    const videoPreview = document.getElementById('videoPreview');
+    
+    if (videoInput) {
+        videoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                videoPreview.src = url;
+                videoPreview.classList.remove('d-none');
+            }
+        });
+    }
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,688 @@
+{% extends 'TopSoutienApp/base.html' %}
+{% load static %}
+
+{% block title %}Profil Étudiant - TopSoutien{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+    --orange: #e76c40;
+    --jaune: #bf903a;
+    --bleu-fonce: #0b0c37;
+    --bleu-top: #0b0c37; /* Bleu principal de TopSoutien */
+}
+
+.student-profile-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.profile-header {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 40px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--orange), var(--jaune));
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.profile-avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange), var(--jaune));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.profile-name {
+    color: var(--bleu-top);
+    font-weight: 700;
+    font-size: 2rem;
+    margin: 20px 0 10px 0;
+}
+
+.profile-type {
+    background: var(--orange);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.info-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    padding: 30px;
+    margin-bottom: 25px;
+    border: none;
+}
+
+.info-card h5 {
+    color: var(--bleu-top);
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-card h5 i {
+    color: var(--orange);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.info-value {
+    color: var(--bleu-top);
+    font-weight: 500;
+}
+
+.btn-custom {
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary-custom {
+    background: linear-gradient(135deg, var(--orange), var(--jaune));
+    color: #fff;
+}
+
+.btn-primary-custom:hover {
+    background: linear-gradient(135deg, var(--jaune), var(--orange));
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 108, 64, 0.4);
+}
+
+.btn-outline-custom {
+    border: 2px solid var(--orange);
+    color: var(--orange);
+    background: transparent;
+}
+
+.btn-outline-custom:hover {
+    background: var(--orange);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.alert-custom {
+    border-radius: 15px;
+    border: none;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+}
+
+.alert-success-custom {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.course-section {
+    background: linear-gradient(135deg, var(--bleu-top) 0%, #1a1a4a 100%);
+    color: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.course-section h5 {
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.btn-find-teacher {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: #fff;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-find-teacher:hover {
+    background: rgba(255,255,255,0.3);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Styles pour le planning */
+.schedule-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: none;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.schedule-card h5 {
+    color: var(--bleu-top);
+    margin-bottom: 20px;
+}
+
+.schedule-item {
+    background: rgba(255,255,255,0.9);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--orange);
+    transition: all 0.3s ease;
+}
+
+.schedule-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.schedule-time {
+    font-weight: 700;
+    color: var(--orange);
+    font-size: 1.1rem;
+}
+
+.schedule-subject {
+    font-weight: 600;
+    color: var(--bleu-top);
+    margin: 5px 0;
+}
+
+.schedule-teacher {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.schedule-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.status-upcoming {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-ongoing {
+    background: #e8f5e8;
+    color: #388e3c;
+}
+
+.status-completed {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+/* Styles pour les prochains cours */
+.next-courses-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: none;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.next-courses-card h5 {
+    color: var(--bleu-top);
+    margin-bottom: 20px;
+}
+
+.course-item {
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.course-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.course-title {
+    font-weight: 700;
+    color: var(--bleu-top);
+    font-size: 1.1rem;
+}
+
+.course-date {
+    background: var(--orange);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.course-teacher {
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.course-duration {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.course-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-course-action {
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-join {
+    background: var(--orange);
+    color: #fff;
+}
+
+.btn-join:hover {
+    background: var(--jaune);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.btn-details {
+    background: transparent;
+    color: var(--orange);
+    border: 1px solid var(--orange);
+}
+
+.btn-details:hover {
+    background: var(--orange);
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .student-profile-section {
+        padding: 20px 0;
+    }
+    
+    .profile-header {
+        padding: 30px 20px;
+    }
+    
+    .profile-name {
+        font-size: 1.5rem;
+    }
+    
+    .profile-stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .info-card {
+        padding: 20px;
+    }
+    
+    .info-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .course-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .course-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="student-profile-section">
+    <div class="container">
+        <!-- Messages de succès -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-custom alert-success-custom alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- En-tête du profil -->
+        <div class="profile-header">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="Photo de profil" class="profile-avatar">
+                    {% else %}
+                        <div class="profile-avatar-placeholder">
+                            <i class="fas fa-user fa-3x text-white"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 text-center text-md-start">
+                    <h1 class="profile-name">{{ full_name }}</h1>
+                    <span class="profile-type">{{ user_type }}</span>
+                    <div class="mt-3">
+                        <a href="#" class="btn btn-custom btn-primary-custom me-2">
+                            <i class="fas fa-edit me-2"></i>Modifier le profil
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-custom btn-outline-custom">
+                            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Cours suivis</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Heures d'étude</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Professeurs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Colonne principale -->
+            <div class="col-lg-8">
+                <!-- Planning du jour -->
+                <div class="schedule-card">
+                    <h5><i class="fas fa-calendar-day"></i>Planning d'aujourd'hui</h5>
+                    
+                    <!-- Cours en cours -->
+                    <div class="schedule-item">
+                        <div class="schedule-time">14:00 - 15:30</div>
+                        <div class="schedule-subject">Mathématiques - Algèbre</div>
+                        <div class="schedule-teacher">Prof. Marie Martin</div>
+                        <span class="schedule-status status-ongoing">En cours</span>
+                    </div>
+                    
+                    <!-- Prochains cours -->
+                    <div class="schedule-item">
+                        <div class="schedule-time">16:00 - 17:30</div>
+                        <div class="schedule-subject">Physique - Mécanique</div>
+                        <div class="schedule-teacher">Prof. Jean Dupont</div>
+                        <span class="schedule-status status-upcoming">À venir</span>
+                    </div>
+                    
+                    <!-- Cours terminé -->
+                    <div class="schedule-item">
+                        <div class="schedule-time">09:00 - 10:30</div>
+                        <div class="schedule-subject">Anglais - Conversation</div>
+                        <div class="schedule-teacher">Prof. Sarah Wilson</div>
+                        <span class="schedule-status status-completed">Terminé</span>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a href="#" class="btn btn-custom btn-primary-custom">
+                            <i class="fas fa-calendar-alt me-2"></i>Voir le planning complet
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Prochains cours -->
+                <div class="next-courses-card">
+                    <h5><i class="fas fa-clock"></i>Prochains cours</h5>
+                    
+                    <div class="course-item">
+                        <div class="course-header">
+                            <div class="course-title">Mathématiques - Trigonométrie</div>
+                            <div class="course-date">Demain 14:00</div>
+                        </div>
+                        <div class="course-teacher">Prof. Marie Martin</div>
+                        <div class="course-duration">Durée: 1h30</div>
+                        <div class="course-actions">
+                            <button class="btn btn-course-action btn-join">
+                                <i class="fas fa-video me-1"></i>Rejoindre
+                            </button>
+                            <button class="btn btn-course-action btn-details">
+                                <i class="fas fa-info-circle me-1"></i>Détails
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item">
+                        <div class="course-header">
+                            <div class="course-title">Physique - Électricité</div>
+                            <div class="course-date">Mercredi 16:00</div>
+                        </div>
+                        <div class="course-teacher">Prof. Jean Dupont</div>
+                        <div class="course-duration">Durée: 1h30</div>
+                        <div class="course-actions">
+                            <button class="btn btn-course-action btn-join">
+                                <i class="fas fa-video me-1"></i>Rejoindre
+                            </button>
+                            <button class="btn btn-course-action btn-details">
+                                <i class="fas fa-info-circle me-1"></i>Détails
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="course-item">
+                        <div class="course-header">
+                            <div class="course-title">Anglais - Grammaire</div>
+                            <div class="course-date">Vendredi 10:00</div>
+                        </div>
+                        <div class="course-teacher">Prof. Sarah Wilson</div>
+                        <div class="course-duration">Durée: 1h00</div>
+                        <div class="course-actions">
+                            <button class="btn btn-course-action btn-join">
+                                <i class="fas fa-video me-1"></i>Rejoindre
+                            </button>
+                            <button class="btn btn-course-action btn-details">
+                                <i class="fas fa-info-circle me-1"></i>Détails
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a href="#" class="btn btn-custom btn-primary-custom">
+                            <i class="fas fa-list me-2"></i>Voir tous les cours
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Informations personnelles -->
+                <div class="info-card">
+                    <h5><i class="fas fa-user-circle"></i>Informations personnelles</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-row">
+                                <span class="info-label">Prénom:</span>
+                                <span class="info-value">{{ first_name }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Nom:</span>
+                                <span class="info-value">{{ last_name }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Email:</span>
+                                <span class="info-value">{{ email }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-row">
+                                <span class="info-label">Téléphone:</span>
+                                <span class="info-value">{{ phone_number|default:"Non renseigné" }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Type de compte:</span>
+                                <span class="info-value">{{ user_type }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Membre depuis:</span>
+                                <span class="info-value">{{ user.date_joined|date:"d/m/Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section des cours -->
+                <div class="course-section">
+                    <h5><i class="fas fa-graduation-cap me-2"></i>Mes cours</h5>
+                    <p class="mb-3">Aucun cours en cours pour le moment.</p>
+                    <a href="{% url 'find_teacher' %}" class="btn btn-find-teacher">
+                        <i class="fas fa-search me-2"></i>Trouver un professeur
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="info-card">
+                    <h5><i class="fas fa-chart-line"></i>Statistiques</h5>
+                    <div class="text-center">
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Cours suivis</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Heures d'étude</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Professeurs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h5><i class="fas fa-trophy"></i>Objectifs</h5>
+                    <p class="text-muted">Définissez vos objectifs d'apprentissage pour suivre vos progrès.</p>
+                    <a href="#" class="btn btn-custom btn-primary-custom w-100">
+                        <i class="fas fa-plus me-2"></i>Ajouter un objectif
+                    </a>
+                </div>
+
+                <!-- Prochain cours en vedette -->
+                <div class="info-card">
+                    <h5><i class="fas fa-star"></i>Prochain cours</h5>
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-calendar-check fa-3x text-warning"></i>
+                        </div>
+                        <h6 class="text-primary">Mathématiques</h6>
+                        <p class="text-muted">Demain à 14:00</p>
+                        <p class="small text-muted">Prof. Marie Martin</p>
+                        <button class="btn btn-custom btn-primary-custom w-100">
+                            <i class="fas fa-bell me-2"></i>Rappel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %} 

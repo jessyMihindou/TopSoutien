@@ -1,0 +1,453 @@
+{% extends 'TopSoutienApp/base.html' %}
+{% load static %}
+
+{% block title %}Paiement - TopSoutien{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+    --orange: #e76c40;
+    --jaune: #bf903a;
+    --bleu-fonce: #0b0c37;
+}
+
+.payment-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.payment-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.payment-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.payment-header {
+    background: linear-gradient(135deg, var(--bleu-fonce), #1a1a4a);
+    color: #fff;
+    padding: 30px;
+    text-align: center;
+}
+
+.payment-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.payment-header p {
+    margin: 10px 0 0 0;
+    opacity: 0.9;
+}
+
+.payment-body {
+    padding: 40px;
+}
+
+.course-summary {
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-left: 4px solid var(--orange);
+}
+
+.course-summary h3 {
+    color: var(--bleu-fonce);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.course-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.detail-value {
+    color: var(--bleu-fonce);
+    font-weight: 600;
+}
+
+.payment-amount {
+    background: var(--orange);
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.payment-form {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    border: 2px solid #f0f0f0;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--bleu-fonce);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 0.2rem rgba(231, 108, 64, 0.25);
+    outline: none;
+}
+
+.payment-methods {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.payment-method-option {
+    flex: 1;
+    min-width: 150px;
+}
+
+.payment-method-radio {
+    display: none;
+}
+
+.payment-method-label {
+    display: block;
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.payment-method-radio:checked + .payment-method-label {
+    border-color: var(--orange);
+    background: linear-gradient(135deg, var(--orange), var(--jaune));
+    color: #fff;
+}
+
+.payment-method-label i {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.btn-pay {
+    background: linear-gradient(135deg, var(--orange), var(--jaune));
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    width: 100%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-pay:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(231, 108, 64, 0.4);
+}
+
+.btn-pay:active {
+    transform: translateY(0);
+}
+
+.security-info {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 30px;
+    border-left: 4px solid #28a745;
+}
+
+.security-info h5 {
+    color: #28a745;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.security-info ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #666;
+}
+
+.security-info li {
+    margin-bottom: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .payment-container {
+        padding: 0 15px;
+    }
+    
+    .payment-body {
+        padding: 25px;
+    }
+    
+    .course-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-methods {
+        flex-direction: column;
+    }
+    
+    .payment-method-option {
+        min-width: auto;
+    }
+}
+
+/* Messages d'erreur/succès */
+.alert {
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: none;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 5px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="payment-section">
+    <div class="payment-container">
+        <!-- Messages d'erreur/succès -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-triangle{% endif %} me-2"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Résumé du cours -->
+        <div class="course-summary">
+            <h3><i class="fas fa-graduation-cap"></i>Résumé de votre réservation</h3>
+            <div class="course-details">
+                <div class="detail-item">
+                    <span class="detail-label">Professeur</span>
+                    <span class="detail-value">{{ course_data.prof_name }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Matière</span>
+                    <span class="detail-value">{{ course_data.subject }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Date</span>
+                    <span class="detail-value">{{ course_data.date }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Heure</span>
+                    <span class="detail-value">{{ course_data.time }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Durée</span>
+                    <span class="detail-value">{{ course_data.duration }}</span>
+                </div>
+            </div>
+            <div class="payment-amount">
+                Montant à payer : {{ course_data.amount }} FCFA
+            </div>
+        </div>
+
+        <!-- Formulaire de paiement -->
+        <div class="payment-card">
+            <div class="payment-header">
+                <h1><i class="fas fa-credit-card me-2"></i>Paiement sécurisé</h1>
+                <p>Finalisez votre réservation en toute sécurité</p>
+            </div>
+            
+            <div class="payment-body">
+                <form method="post" class="payment-form">
+                    {% csrf_token %}
+                    
+                    <!-- Méthodes de paiement -->
+                    <div class="form-group">
+                        <label class="form-label">Méthode de paiement</label>
+                        <div class="payment-methods">
+                            <div class="payment-method-option">
+                                <input type="radio" name="payment_method" value="mobile_money" id="mobile_money" class="payment-method-radio" checked>
+                                <label for="mobile_money" class="payment-method-label">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    Mobile Money
+                                </label>
+                            </div>
+                            <div class="payment-method-option">
+                                <input type="radio" name="payment_method" value="orange_money" id="orange_money" class="payment-method-radio">
+                                <label for="orange_money" class="payment-method-label">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    Orange Money
+                                </label>
+                            </div>
+                            <div class="payment-method-option">
+                                <input type="radio" name="payment_method" value="moov_money" id="moov_money" class="payment-method-radio">
+                                <label for="moov_money" class="payment-method-label">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    Moov Money
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Numéro de téléphone -->
+                    <div class="form-group">
+                        <label for="{{ form.phone_number.id_for_label }}" class="form-label">Numéro de téléphone</label>
+                        {{ form.phone_number }}
+                        {% if form.phone_number.errors %}
+                            <div class="error">{{ form.phone_number.errors.0 }}</div>
+                        {% endif %}
+                        <small class="form-text text-muted">{{ form.phone_number.help_text }}</small>
+                    </div>
+
+                    <!-- Montant (lecture seule) -->
+                    <div class="form-group">
+                        <label for="{{ form.amount.id_for_label }}" class="form-label">Montant</label>
+                        {{ form.amount }}
+                        {% if form.amount.errors %}
+                            <div class="error">{{ form.amount.errors.0 }}</div>
+                        {% endif %}
+                        <small class="form-text text-muted">{{ form.amount.help_text }}</small>
+                    </div>
+
+                    <!-- Bouton de paiement -->
+                    <button type="submit" class="btn-pay">
+                        <i class="fas fa-lock me-2"></i>Payer {{ course_data.amount }} FCFA
+                    </button>
+                </form>
+
+                <!-- Informations de sécurité -->
+                <div class="security-info">
+                    <h5><i class="fas fa-shield-alt"></i>Paiement sécurisé</h5>
+                    <ul>
+                        <li>Vos données sont protégées par un cryptage SSL</li>
+                        <li>Aucune donnée bancaire n'est stockée sur nos serveurs</li>
+                        <li>Transaction sécurisée via Mobile Money</li>
+                        <li>Remboursement possible dans les 24h</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Animation des boutons de méthode de paiement
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentMethods = document.querySelectorAll('.payment-method-radio');
+    
+    paymentMethods.forEach(method => {
+        method.addEventListener('change', function() {
+            // Retirer la classe active de tous les labels
+            document.querySelectorAll('.payment-method-label').forEach(label => {
+                label.style.borderColor = '#e0e0e0';
+                label.style.background = '#fff';
+                label.style.color = '#000';
+            });
+            
+            // Ajouter la classe active au label sélectionné
+            if (this.checked) {
+                const label = this.nextElementSibling;
+                label.style.borderColor = 'var(--orange)';
+                label.style.background = 'linear-gradient(135deg, var(--orange), var(--jaune))';
+                label.style.color = '#fff';
+            }
+        });
+    });
+    
+    // Validation du formulaire
+    const form = document.querySelector('.payment-form');
+    const phoneInput = document.getElementById('phone_number');
+    
+    form.addEventListener('submit', function(e) {
+        const phone = phoneInput.value.trim();
+        
+        if (!phone) {
+            e.preventDefault();
+            alert('Veuillez entrer votre numéro de téléphone.');
+            return;
+        }
+        
+        if (phone.length < 8) {
+            e.preventDefault();
+            alert('Le numéro de téléphone semble trop court.');
+            return;
+        }
+        
+        // Confirmation avant paiement
+        if (!confirm('Êtes-vous sûr de vouloir effectuer ce paiement ?')) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,492 @@
+{% extends 'TopSoutienApp/base.html' %}
+{% load static %}
+
+{% block title %}Accueil - TopSoutien{% endblock %}
+
+{% block extra_css %}
+<style>
+:root {
+    --bleu-fonce: #0b0c37;
+    --bleu-ciel: #eaf5fb;
+    --orange: #e0753c;
+    --gris-doux: #f4f7fb;
+}
+body {
+    background: var(--bleu-ciel);
+}
+.hero-section {
+    position: relative;
+    background: var(--bleu-fonce);
+    color: #fff;
+    padding: 80px 0 60px 0;
+    text-align: center;
+    overflow: hidden;
+    min-height: 60vh;
+}
+.hero-bg-diapo {
+    position: absolute;
+    top: 0; left: 0; width: 100vw; height: 100%;
+    z-index: 1;
+}
+.hero-bg-diapo img {
+    position: absolute;
+    top: 0; left: 0; width: 100vw; height: 100%; object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s;
+    filter: brightness(0.7) blur(0.5px);
+}
+.hero-bg-diapo img.active {
+    opacity: 1;
+    z-index: 2;
+}
+.hero-overlay { position: absolute; top:0; left:0; width:100vw; height:100%; background:rgba(7,8,69,0.45); z-index:2; }
+.hero-content {
+    position: relative; z-index: 3; max-width: 700px; margin: 0 auto; padding: 60px 20px 80px 20px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.hero-content h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 18px; letter-spacing: 1px; animation: fadeInDown 1s; }
+.hero-content p { font-size: 1.3rem; font-weight: 400; margin-bottom: 32px; animation: fadeInUp 1.2s; }
+.hero-content .btn-main, .hero-content .btn-secondary {
+    font-weight: 700; font-size: 1.15rem; border-radius: 8px; padding: 16px 38px; border: none;
+    margin: 0 10px 10px 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.10); transition: background 0.2s, transform 0.2s;
+    animation: fadeInUp 1.4s;
+}
+.hero-content .btn-main { background: var(--bleu-fonce); color: #fff; }
+.hero-content .btn-main:hover { background: var(--orange); color: #fff; }
+.hero-content .btn-secondary { background: var(--orange); color: #fff; border: none; }
+.hero-content .btn-secondary:hover { background: var(--bleu-fonce); color: #fff; }
+.hero-illustration {
+    margin-top: 30px;
+    width: 260px;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    animation: fadeInUp 1.6s;
+}
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-content h1 {
+        font-size: 2.4rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.2rem;
+    }
+    
+    .hero-illustration {
+        width: 220px;
+    }
+    
+    .courses-list, .categories-list, .teachers-list {
+        gap: 24px;
+    }
+    
+    .course-card, .teacher-card {
+        width: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 0 40px 0;
+        min-height: 50vh;
+    }
+    
+    .hero-content {
+        padding: 40px 16px 60px 16px;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem;
+        margin-bottom: 16px;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+        margin-bottom: 24px;
+    }
+    
+    .hero-content .btn-main, .hero-content .btn-secondary {
+        font-size: 1rem;
+        padding: 14px 28px;
+        margin: 0 8px 8px 8px;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .hero-illustration {
+        width: 180px;
+        margin-top: 20px;
+    }
+    
+    .popular-courses, .categories-section, .how-section, .teachers-section, .students-section, .parents-section {
+        padding: 40px 0;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 24px;
+        padding: 0 16px;
+    }
+    
+    .courses-list, .categories-list, .teachers-list {
+        gap: 20px;
+        padding: 0 16px;
+    }
+    
+    .course-card, .teacher-card {
+        width: 100%;
+        max-width: 320px;
+    }
+    
+    .category-card {
+        width: calc(50% - 10px);
+        min-width: 140px;
+    }
+    
+    .how-step {
+        width: 100%;
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        padding: 40px 0 30px 0;
+        min-height: 40vh;
+    }
+    
+    .hero-content {
+        padding: 30px 12px 40px 12px;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.6rem;
+        margin-bottom: 12px;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+    
+    .hero-content .btn-main, .hero-content .btn-secondary {
+        font-size: 0.95rem;
+        padding: 12px 24px;
+        margin: 0 6px 6px 6px;
+    }
+    
+    .hero-illustration {
+        width: 150px;
+        margin-top: 16px;
+    }
+    
+    .popular-courses, .categories-section, .how-section, .teachers-section, .students-section, .parents-section {
+        padding: 32px 0;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        padding: 0 12px;
+    }
+    
+    .courses-list, .categories-list, .teachers-list {
+        gap: 16px;
+        padding: 0 12px;
+    }
+    
+    .category-card {
+        width: 100%;
+        min-width: unset;
+    }
+    
+    .course-card-body, .teacher-card-body {
+        padding: 16px 16px 0 16px;
+    }
+    
+    .course-title, .teacher-name {
+        font-size: 1.1rem;
+    }
+}
+
+.section-title {
+    color: var(--bleu-fonce);
+    font-weight: 800;
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.popular-courses, .categories-section, .how-section, .teachers-section, .students-section, .parents-section {
+    background: var(--gris-doux);
+    margin-bottom: 0;
+    padding: 56px 0;
+}
+.courses-list, .categories-list, .teachers-list {
+    display: flex; flex-wrap: wrap; gap: 32px; justify-content: center;
+}
+.course-card, .teacher-card, .category-card, .how-step {
+    background: #fff;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--bleu-fonce);
+    transition: transform 0.15s;
+}
+.course-card, .teacher-card {
+    background: #fff; border-radius: 16px;
+    width: 320px; padding: 0 0 18px 0; cursor: pointer; display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+.course-card:hover, .teacher-card:hover { transform: translateY(-4px) scale(1.01); }
+.course-card img, .teacher-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 16px 16px 0 0; transition: transform 0.4s; }
+.course-card:hover img, .teacher-card:hover img { transform: scale(1.07); }
+.course-card-body, .teacher-card-body { padding: 18px 18px 0 18px; flex: 1; }
+.course-title, .teacher-name { font-weight: 700; font-size: 1.15rem; margin-bottom: 6px; }
+.course-prof, .teacher-bio { color: #6c757d; font-size: 1rem; margin-bottom: 8px; }
+.course-rating { color: #ffc107; font-size: 1.1rem; margin-bottom: 8px; }
+.course-price { color: #4926b3; font-weight: 700; font-size: 1.1rem; }
+.course-badge {
+    position: absolute; top: 16px; left: 16px; background: var(--bleu-fonce); color: #fff; font-weight: 700; padding: 6px 16px; border-radius: 8px; font-size: 0.98rem;
+    border: none;
+}
+.category-card {
+    background: #fff;
+    color: var(--bleu-fonce);
+    border: none;
+    border-radius: 12px;
+    padding: 24px 32px 18px 32px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-width: 170px;
+    min-height: 220px;
+}
+.category-card:nth-child(2) {
+    border-color: var(--bleu-fonce);
+}
+.category-card:nth-child(3) {
+    border-color: var(--bleu-fonce);
+}
+.category-card:nth-child(4) {
+    border-color: var(--bleu-fonce);
+}
+.category-card:nth-child(5) {
+    border-color: var(--bleu-fonce);
+}
+.category-card:hover {
+    background: var(--bleu-fonce);
+    color: #fff;
+}
+.category-card img {
+    width: 90px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    margin-bottom: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.category-card:hover img {
+    transform: scale(1.08) rotate(-2deg);
+    box-shadow: 0 8px 32px rgba(40,167,69,0.18);
+}
+.how-steps { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; margin-bottom: 24px; }
+.how-step { background: #fff; border-radius: 12px; padding: 28px 24px; width: 260px; text-align: center; position: relative; }
+.how-step i { font-size: 2.2rem; color: #28a745; margin-bottom: 12px; }
+.how-step img { width: 60px; margin-bottom: 10px; }
+.how-step-title { font-weight: 700; color: var(--bleu-fonce); margin-bottom: 8px; }
+.how-step-desc { color: #6c757d; font-size: 1rem; }
+.students-section, .parents-section { background: #fff; }
+.info-block { max-width: 700px; margin: 0 auto 24px auto; text-align: center; display: flex; align-items: center; gap: 32px; justify-content: center; }
+.info-block img { width: 90px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.info-block h4 { font-weight: 700; color: var(--bleu-fonce); margin-bottom: 10px; }
+.info-block p { color: #6c757d; font-size: 1.08rem; }
+@media (max-width: 900px) {
+    .courses-list, .categories-list, .teachers-list, .how-steps { flex-direction: column; gap: 18px; }
+    .course-card, .teacher-card { width: 100%; }
+    .info-block { flex-direction: column; gap: 12px; }
+}
+.fav-matieres .badge {
+    background: var(--orange);
+    color: #fff;
+}
+.card-next-course .btn-join {
+    background: var(--bleu-fonce);
+    color: #fff;
+    border: none;
+    transition: background 0.2s, color 0.2s;
+}
+.card-next-course .btn-join:hover {
+    background: var(--bleu-fonce);
+    color: #fff;
+}
+.separator {
+    border-top: 3px solid var(--bleu-fonce);
+    width: 60px;
+    margin: 0 auto 24px auto;
+}
+.navbar-oc nav a:hover, .navbar-oc nav a.active {
+    background: #eaf5fb;
+    color: #0b0c37;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="hero-section">
+    <div class="hero-bg-diapo">
+        <img src="{% static 'TopSoutienApp/images/Diapo1.avif' %}" class="active" alt="slide1">
+        <img src="{% static 'TopSoutienApp/images/Diapo2.jpg' %}" alt="slide2">
+        <img src="{% static 'TopSoutienApp/images/Diapo3.jpg' %}" alt="slide3">
+        <img src="{% static 'TopSoutienApp/images/Diapo4.jpg' %}" alt="slide4">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Libérez votre potentiel scolaire</h1>
+        <p>Trouvez les meilleurs professeurs, rejoignez des cours interactifs et progressez avec TopSoutien.</p>
+        <div>
+            <a href="{% url 'find_teacher' %}" class="btn btn-main">Trouver un professeur</a>
+            <a href="{% url 'login' %}" class="btn btn-secondary">Connexion / Inscription</a>
+        </div>
+        <img src="{% static 'TopSoutienApp/images/PC.png' %}" class="hero-illustration" alt="Groupe d'élèves">
+    </div>
+</section>
+
+<!-- POPULAR COURSES -->
+<section class="popular-courses">
+    <h2 class="section-title">Cours populaires</h2>
+    <div class="courses-list">
+        <div class="course-card">
+            <span class="course-badge">Nouveau</span>
+            <img src="{% static 'TopSoutienApp/images/Eleve1.jpg' %}" alt="Cours 1">
+            <div class="course-card-body">
+                <div class="course-title">Réussir en Mathématiques</div>
+                <div class="course-prof"><i class="fas fa-user me-1"></i>Dr. Sophie Dupont</div>
+                <div class="course-rating"><i class="fas fa-star"></i> 4.9 (120 avis)</div>
+                <div class="course-price">10000 FCFA/h</div>
+            </div>
+        </div>
+        <div class="course-card">
+            <img src="{% static 'TopSoutienApp/images/img.png' %}" alt="Cours 2">
+            <div class="course-card-body">
+                <div class="course-title">Anglais pour tous niveaux</div>
+                <div class="course-prof"><i class="fas fa-user me-1"></i>John Smith</div>
+                <div class="course-rating"><i class="fas fa-star"></i> 4.8 (98 avis)</div>
+                <div class="course-price">6000 FCFA/h</div>
+            </div>
+        </div>
+        <div class="course-card">
+            <img src="{% static 'TopSoutienApp/images/jessy.jpg' %}" alt="Cours 3">
+            <div class="course-card-body">
+                <div class="course-title">Informatique : Débutant à Avancé</div>
+                <div class="course-prof"><i class="fas fa-user me-1"></i>Jessy M.</div>
+                <div class="course-rating"><i class="fas fa-star"></i> 5.0 (54 avis)</div>
+                <div class="course-price">5000 FCFA/h</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories-section">
+    <h2 class="section-title">Catégories</h2>
+    <div class="categories-list">
+        <div class="category-card"><img src="{% static 'TopSoutienApp/images/Mathematique.jpg' %}" alt="Maths">Mathématiques</div>
+        <div class="category-card"><img src="{% static 'TopSoutienApp/images/Physique.jpg' %}" alt="Physique">Physique-Chimie</div>
+        <div class="category-card"><img src="{% static 'TopSoutienApp/images/Svt.jpg' %}" alt="SVT">SVT</div>
+        <div class="category-card"><img src="{% static 'TopSoutienApp/images/Français.webp' %}" alt="Français">Français</div>
+        <div class="category-card"><img src="{% static 'TopSoutienApp/images/Anglais.jpg' %}" alt="Anglais">Anglais</div>
+        <div class="category-card"><img src="{% static 'TopSoutienApp/images/Informatique.jpeg' %}" alt="Informatique">Informatique</div>
+        <div class="category-card"><img src="{% static 'TopSoutienApp/images/Histoire.jpg' %}" alt="Histoire">Histoire-Géo</div>
+        <div class="category-card"><img src="{% static 'TopSoutienApp/images/Econommie.jpg' %}" alt="Économie">Économie</div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+    <h2 class="section-title">Comment ça marche ?</h2>
+    <div class="how-steps">
+        <div class="how-step">
+            <img src="{% static 'TopSoutienApp/images/search.png' %}" alt="Recherche">
+            <div class="how-step-title">1. Rechercher</div>
+            <div class="how-step-desc">Trouvez le professeur ou le cours idéal selon vos besoins.</div>
+        </div>
+        <div class="how-step">
+            <img src="{% static 'TopSoutienApp/images/reservation cours.webp' %}" alt="Réserver">
+            <div class="how-step-title">2. Réserver</div>
+            <div class="how-step-desc">Réservez votre créneau au moment qui vous convient.</div>
+        </div>
+        <div class="how-step">
+            <img src="{% static 'TopSoutienApp/images/Image_apprendre.webp' %}" alt="Apprendre">
+            <div class="how-step-title">3. Apprendre</div>
+            <div class="how-step-desc">Rejoignez votre cours et progressez de façon interactive !</div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED TEACHERS -->
+<section class="teachers-section">
+    <h2 class="section-title">Professeurs à la une</h2>
+    <div class="teachers-list">
+        <div class="teacher-card">
+            <img src="{% static 'TopSoutienApp/images/prof1.jpg' %}" alt="Professeur 1">
+            <div class="teacher-card-body">
+                <div class="teacher-name">Dr. Sophie Dupont <span style="color:#28a745; font-size:1.1em;">★</span></div>
+                <div class="teacher-bio">Mathématiques & Physique</div>
+                <div class="course-rating"><i class="fas fa-star"></i> 4.9</div>
+            </div>
+        </div>
+        <div class="teacher-card">
+            <img src="{% static 'TopSoutienApp/images/img_1.png' %}" alt="Professeur 2">
+            <div class="teacher-card-body">
+                <div class="teacher-name">John Smith</div>
+                <div class="teacher-bio">Anglais & Français</div>
+                <div class="course-rating"><i class="fas fa-star"></i> 4.8</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOR STUDENTS -->
+<section class="students-section">
+    <div class="info-block">
+        <img src="{% static 'TopSoutienApp/images/Eleve1.jpg' %}" alt="Élève">
+        <div>
+            <h4>Pour les élèves</h4>
+            <p>Suivez votre progression, accédez à des ressources et échangez avec les meilleurs professeurs pour booster votre réussite.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FOR PARENTS -->
+<section class="parents-section">
+    <div class="info-block">
+        <img src="{% static 'TopSoutienApp/images/Parentdeleve.jpg' %}" alt="Parents">
+        <div>
+            <h4>Pour les parents</h4>
+            <p>Suivez la progression de votre enfant, communiquez avec les professeurs et garantissez un environnement d'apprentissage sûr et efficace.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Diaporama dynamique
+const slides = document.querySelectorAll('.hero-bg-diapo img');
+let current = 0;
+setInterval(() => {
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+}, 4000);
+</script>
+{% endblock %}

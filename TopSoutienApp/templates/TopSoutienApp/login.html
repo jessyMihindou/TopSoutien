@@ -1,0 +1,194 @@
+{% extends "TopSoutienApp/base.html" %}
+{% load static %}
+
+{% block title %}Connexion | TopSoutien{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h2>Connexion</h2>
+    <p><a href="{% url 'signup_student' %}">S'inscrire comme étudiant</a> ou <a href="{% url 'signup_teacher' %}">comme enseignant</a></p>
+
+    <button class="social-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        Se connecter avec Google
+    </button>
+    <button class="social-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook">
+        Se connecter avec Facebook
+    </button>
+    <button class="social-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">
+        Se connecter avec Apple
+    </button>
+
+    <div class="separator"><span>ou</span></div>
+
+    <!-- Messages d'erreur/succès UNIQUEMENT pour le login -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'compte' not in message.message %}  <!-- Ne pas afficher les messages de création de compte -->
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- Formulaire Django -->
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="error">{{ form.username.errors.0 }}</div>
+            {% endif %}
+        </label>
+        
+        <label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <div class="error">{{ form.password.errors.0 }}</div>
+            {% endif %}
+        </label>
+        
+        <p><a href="#">Mot de passe oublié ?</a></p>
+        <label><input type="checkbox" name="remember"> Se souvenir de moi</label>
+        <button type="submit" class="pink-btn">Se connecter</button>
+    </form>
+</div>
+
+<style>
+.login-container {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(7,8,69,0.07);
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 40px 32px 32px 32px;
+}
+.login-container h2 {
+    color: #070845;
+    font-weight: 700;
+}
+.login-form input[type="email"], .login-form input[type="password"] {
+    border-radius: 8px;
+    border: 1px solid #eaf5fb;
+    padding: 0.75rem;
+    margin-bottom: 12px;
+}
+.pink-btn, .social-btn {
+    background: #070845;
+    color: #fff;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    padding: 12px 0;
+    margin-bottom: 10px;
+    width: 100%;
+    transition: background 0.2s, color 0.2s;
+}
+.pink-btn:hover, .social-btn:hover {
+    background: #eaf5fb;
+    color: #070845;
+}
+.separator span {
+    background: #eaf5fb;
+    color: #070845;
+    padding: 0 10px;
+    border-radius: 8px;
+}
+.login-container a {
+    color: #070845;
+    text-decoration: underline;
+}
+.login-container a:hover {
+    color: #eaf5fb;
+}
+
+/* Ajouter ces styles pour les messages */
+.alert {
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    border: 1px solid;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-container {
+        margin: 40px auto;
+        padding: 32px 24px 24px 24px;
+        max-width: 90%;
+    }
+    
+    .login-container h2 {
+        font-size: 1.6rem;
+    }
+    
+    .social-btn {
+        padding: 10px 0;
+        font-size: 0.9rem;
+    }
+    
+    .social-btn img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        margin: 20px auto;
+        padding: 24px 16px 16px 16px;
+        max-width: 95%;
+    }
+    
+    .login-container h2 {
+        font-size: 1.4rem;
+    }
+    
+    .login-form input[type="email"], 
+    .login-form input[type="password"] {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+    
+    .pink-btn, .social-btn {
+        padding: 10px 0;
+        font-size: 0.9rem;
+    }
+    
+    .social-btn img {
+        width: 18px;
+        height: 18px;
+    }
+}
+</style>
+{% endblock %}
